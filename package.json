@@ -15,5 +15,10 @@
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-compass": "~0.2.0",
     "grunt-contrib-cssmin": "~0.6.1"
+  },
+  "scripts": {
+    "start": "electron ./demo/main.js",
+    "prepublish": "tsc && rm ./*.ts"
   }
+
 }

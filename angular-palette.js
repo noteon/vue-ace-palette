@@ -98,13 +98,14 @@ angular.module('palette', ['ngSanitize'])
     };
   })
   .directive('palette',
-    ['$timeout','$location', '$route', 'paletteService',
-    function ($timeout, $location, $route, paletteService) {
+    ['$sce','$timeout','$location', '$route', 'paletteService',
+    function ($sce, $timeout, $location, $route, paletteService) {
     return {
       restrict: 'EA',
       replace: true,
       scope: {},
-      templateUrl: 'angular-palette/palette.tpl.html',
+      //templateUrl: 'angular-palette/palette.tpl.html',
+      templateUrl: '../palette.tpl.html',
 
       link: function (scope) {
 
@@ -122,7 +123,7 @@ angular.module('palette', ['ngSanitize'])
 
         ============================================================================= */
 
-        Mousetrap.bindGlobal(['ctrl+shift+l', 'command+shift+l'], function () {
+        Mousetrap.bind(['ctrl+shift+l', 'command+shift+l'], function () {
           if (scope.visible) {
             scope.$apply(function () {
               scope.close();
@@ -144,6 +145,7 @@ angular.module('palette', ['ngSanitize'])
             DOWN_ARROW_KEY = 40,
             ESCAPE_KEY = 27;
 
+        window["scope"]=$scope;
         $scope.visible = false;
         // some placeholder commands for the moment
         $scope.commands = [];
@@ -155,6 +157,7 @@ angular.module('palette', ['ngSanitize'])
             if (typeof route.name !== 'undefined') {
               $scope.commands.push({
                 name: 'Goto: ' + route.name,
+                safeName: $sce.trustAsHtml('Goto: ' + route.name),
                 cmd: 'link',
                 data: path
               });
@@ -171,9 +174,12 @@ angular.module('palette', ['ngSanitize'])
         }
 
         paletteService.subscribe(function (newCommands, oldCommands) {
-          // console.log('Change in the subscribe', oldCommands);
+          console.log('Change in the subscribe', newCommands, oldCommands);
+          
           removeOldCommands(oldCommands);
           addNewCommands(newCommands);
+          
+          console.log($scope.command);
         });
 
         $scope.activeCmd = 0;
