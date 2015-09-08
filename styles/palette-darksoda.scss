@@ -48,6 +48,11 @@ $palette-border-radius: 3px;
     width: 100%;
 }
 
+.palette-shortcuts{
+    position:fixed;
+    right: 1em;
+}
+
 input[type="text"].palette-input {
     background: $secondary-bg-color;
     color: $text-color;

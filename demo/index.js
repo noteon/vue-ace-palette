@@ -8,11 +8,6 @@ angular.module('angularPaletteDemoApp', ['palette','ngRoute'])
         controller: 'MainCtrl',
         name: 'Main Page'
       })
-      .when('/something', {
-        templateUrl: 'views/something.html',
-        controller: 'SomethingCtrl',
-        name: 'Something Page'
-      })
       .when('/first', {
         templateUrl: 'views/first.html',
         controller: 'FirstCtrl',
@@ -23,22 +18,18 @@ angular.module('angularPaletteDemoApp', ['palette','ngRoute'])
         controller: 'ThirdlyCtrl',
         name: 'The Thirdly Page'
       })
-      .when('/item/:id', {
-        templateUrl: 'views/item.html',
-        controller: 'ItemCtrl'
-      })
       .otherwise({
         redirectTo: '/'
       });
   });
   
 angular.module('angularPaletteDemoApp')
-  .controller('MainCtrl', ['$scope','paletteService', function($scope, paletteService) {
+  .controller('MainCtrl', ['$scope','paletteService','aceEditCommands', function($scope, paletteService,aceEditCommands) {
     $scope.makeMessage = function () {
       alert('called from the palette!');
     }
 
-    paletteService.exportCommands([
+    paletteService.addCommands([
       {
         name: "Notify: Alert Message",
         cmd: function () {
@@ -47,5 +38,22 @@ angular.module('angularPaletteDemoApp')
         data: 'something'
       }
     ]);
+  }]);
+    
+  
+angular.module('angularPaletteDemoApp')
+  .service('aceEditCommands', ['paletteService', function(paletteService) {
+    paletteService.addCommands([
+      {
+        name: "Edit Replace ...",
+        winShortcuts:['CTRL+R'],
+        macShortcuts:['⌘+R'],
+        cmd: function () {
+          alert('called from the palette!');
+        },
+        data: 'something'
+      }
+    ]);
 
-  }]);  
+    return;
+  }]);    
