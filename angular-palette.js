@@ -92,7 +92,7 @@ angular.module('palette', ['ngSanitize'])
       link: function (scope, elem, attrs) {
         elem.bind('keydown', function (e) {
           scope.$apply(function () {
-            console.log("attrs.drKeydown", attrs.drKeydown);
+            //console.log("attrs.drKeydown", attrs.drKeydown);
             $parse(attrs.drKeydown)(scope, { $event: e });
           });
         });
