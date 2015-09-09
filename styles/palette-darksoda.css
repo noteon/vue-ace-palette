@@ -52,10 +52,6 @@
   width: 100%;
 }
 
-.palette-shortcuts{
-    position:fixed;
-    right: 2em;
-}
 /* line 51, ../../styles/palette-darksoda.scss */
 input[type="text"].palette-input {
   background: #383838;
@@ -139,4 +135,10 @@ input[type="text"].palette-input {
   border-left: #888888;
   border-right: #080808;
   border-radius: 30px;
+}
+
+
+.palette-shortcuts{
+    float:right;
+    padding-right: 0.5em;    
 }

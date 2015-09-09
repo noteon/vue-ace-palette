@@ -52,9 +52,15 @@ angular.module('palette', ['ngSanitize'])
       link: function (scope, elem, attrs) {
         attrs.$observe('drFocusOn', function (newValue) {
           if (newValue === 'true') {
-            setTimeout(function () {
-              elem[0].focus();
-            }, 100);
+            var setElemFocus=function(timeOut){
+              setTimeout(function () {
+                //console.log("time out elem focus");
+                elem[0].focus();
+              }, timeOut);
+            }
+            
+            setElemFocus(100);
+            setElemFocus(200);
           }
         });
       }
@@ -68,6 +74,7 @@ angular.module('palette', ['ngSanitize'])
       restrict: 'A',
       link: function (scope, elem, attrs) {
         attrs.$observe('drScrollToContain', function (newValue) {
+          //console.log("scroll",newValue)
           if (newValue === 'true') {
             elem[0].scrollIntoView(false);
           }
@@ -128,7 +135,7 @@ angular.module('palette', ['ngSanitize'])
             '<div class="palette-body" ng-class="{palettevisible: visible}">',
             '<div class="palette-inner">',
             '<input type="text" class="palette-input" ng-model="query.name"',
-            'dr-blur="close()"',
+            //'dr-blur="close()"',
             'dr-focus-on="{{visible}}" dr-keydown="paletteInputKeyHandler($event)">',
 
             '<div class="palette-results" ng-show="filteredCommands.length">',
@@ -219,7 +226,7 @@ angular.module('palette', ['ngSanitize'])
                   return "<span class='palette-shortcuts'>" + bindKey[platform] || "" + "</span>"
                 }
 
-                it.safeHtml = it.name + (it.bindKey ? getShortcutsHtml(it.bindKey) : "")
+                it.safeHtml =it.name + (it.bindKey ? getShortcutsHtml(it.bindKey) : "");
 
                 return it;
               })
@@ -283,6 +290,10 @@ angular.module('palette', ['ngSanitize'])
               // results (But seriously, don't use the mouse, you bad)
               $timeout(function () {
                 $scope.visible = false;
+                
+                if (ace.__paletteFocusEditor)
+                   ace.__paletteFocusEditor.focus();
+                
               }, 1);
             };
 
@@ -290,8 +301,15 @@ angular.module('palette', ['ngSanitize'])
               $scope.commands = [];
 
               var cmds = paletteService.getCommands();
-              console.log('paletteService,getCommands', cmds);
+              //console.log('paletteService,getCommands', cmds);
+              
+              $scope.currentFocusNode=document.getSelection().baseNode;
 
+                if (ace.__paletteFocusEditor)
+                   ace.__paletteFocusEditor.blur();
+
+                 
+              
               addNewCommands(aceEditorCommands.getCommands());
               addNewCommands(cmds);
 
@@ -310,6 +328,7 @@ angular.module('palette', ['ngSanitize'])
                 try {
                   if (typeof selection.cmd === 'function') {
                     selection.cmd(selection.data);
+                    //selection.cmd();
                   }
                   else {
                     // Built in commands like link and extLink
@@ -344,7 +363,7 @@ angular.module('palette', ['ngSanitize'])
 //   data:any;
 // }
 //add by qinghai
-function hookAceFocusAndBlurEvent() {
+(function () {
   if (!ace) return;
 
   var oldEditFunc = ace.edit;
@@ -366,9 +385,8 @@ function hookAceFocusAndBlurEvent() {
   }
 
   ace.edit = newAceEdit.bind(ace);
-};
+})();
 
-hookAceFocusAndBlurEvent();
 
 angular.module('palette')
   .factory('aceEditorCommands', ['$timeout', function ($timeout) {
@@ -386,8 +404,8 @@ angular.module('palette')
         var exec = function (commandName) {
           return function () {
             var theEditor = ace.__paletteFocusEditor;
-            //theEditor.setFocus();
-            window["curEditor"] = theEditor;
+            theEditor.focus();
+            //window["curEditor"] = theEditor;
             return theEditor.execCommand(commandName);
           }
         }
@@ -497,16 +515,11 @@ angular.module('palette')
           "alignCursors": "alignCursors",
           "findAll": "findAll"
         }        
-        //var lines=[];
-        //var platform=editor.commands.platform;
         var cmds = Object.keys(editor.commands.commands).map(function (key) {
           var command = editor.commands.commands[key];
-          //console.log("ace command",key, _.startCase(key));
-          
-          //lines.push('"'+key+'"'+":"+'"'+key+'";');
 
           return {
-            name: _.startCase(aceCommandNamingMap[key]?aceCommandNamingMap[key]:key),
+            name: "Editor: "+_.startCase(aceCommandNamingMap[key]?aceCommandNamingMap[key]:key),
             bindKey: command.bindKey,
             cmd: function () {
               $timeout(function () {
