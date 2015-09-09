@@ -18,18 +18,18 @@ angular.module('palette', ['ngSanitize'])
       addCommands: function (newCommands) {
         oldCommands.push.apply(oldCommands, newCommands);
       },
-      
-      clearCommands:function(){
+
+      clearCommands: function () {
         if (typeof this.subscribedMethod !== 'undefined') {
           this.subscribedMethod([], oldCommands);
         }
-        
-        return oldCommands=[];
+
+        return oldCommands = [];
       },
 
       getCommands: function () {
         return oldCommands;
-      }      
+      }
     };
 
   }])
@@ -97,20 +97,20 @@ angular.module('palette', ['ngSanitize'])
     }
 
     return function (value, query) {
-      
-      var theValue=value?value:"";
-      var lowerQuery=query?query.toLowerCase():"";
-      
-      var parts=theValue.split("<span");
-      var namePart=parts[0];
-      var shortcutPart=parts[1]?"<span"+parts[1]:"";
-      
-      
+
+      var theValue = value ? value : "";
+      var lowerQuery = query ? query.toLowerCase() : "";
+
+      var parts = theValue.split("<span");
+      var namePart = parts[0];
+      var shortcutPart = parts[1] ? "<span" + parts[1] : "";
+
+
       if (typeof lowerQuery !== 'undefined' && lowerQuery !== '') {
         //console.log('drHighlight', namePart, lowerQuery);
         var ind = namePart.toLowerCase().indexOf(lowerQuery);
         if (ind !== -1) {
-          return wrapText(ind, namePart, '<span class="palettematch">', '</span>', lowerQuery.length)+shortcutPart;
+          return wrapText(ind, namePart, '<span class="palettematch">', '</span>', lowerQuery.length) + shortcutPart;
         }
       }
       return value;
@@ -124,24 +124,24 @@ angular.module('palette', ['ngSanitize'])
           replace: true,
           scope: {},
           //templateUrl: 'angular-palette/palette.tpl.html',
-          template:[
-'<div class="palette-body" ng-class="{palettevisible: visible}">',
-    '<div class="palette-inner">',
-        '<input type="text" class="palette-input" ng-model="query.name"',
-             'dr-blur="close()"',
-             'dr-focus-on="{{visible}}" dr-keydown="paletteInputKeyHandler($event)">',
-            
-        '<div class="palette-results" ng-show="filteredCommands.length">',
+          template: [
+            '<div class="palette-body" ng-class="{palettevisible: visible}">',
+            '<div class="palette-inner">',
+            '<input type="text" class="palette-input" ng-model="query.name"',
+            'dr-blur="close()"',
+            'dr-focus-on="{{visible}}" dr-keydown="paletteInputKeyHandler($event)">',
+
+            '<div class="palette-results" ng-show="filteredCommands.length">',
             '<div class="palette-item"',
-                'ng-repeat="command in (filteredCommands = (commands | orderBy: '+"'name'"+'| filter:query ))"',
-                'ng-class="{selected: $index == activeCmd}"',
-                'ng-bind-html="command.safeHtml | drHighlight:query.name"',
-                'dr-scroll-to-contain="{{$index == activeCmd}}"',
-                'ng-click="useSelection(command)">',
+            'ng-repeat="command in (filteredCommands = (commands | orderBy: ' + "'name'" + '| filter:query ))"',
+            'ng-class="{selected: $index == activeCmd}"',
+            'ng-bind-html="command.safeHtml | drHighlight:query.name"',
+            'dr-scroll-to-contain="{{$index == activeCmd}}"',
+            'ng-click="useSelection(command)">',
             '</div>',
-        '</div>',
-    '</div>',
-'</div>',
+            '</div>',
+            '</div>',
+            '</div>',
           ].join(" "),
 
           link: function (scope) {
@@ -175,10 +175,10 @@ angular.module('palette', ['ngSanitize'])
 
           },
 
-          controller: ['$scope','aceEditorCommands', function ($scope,aceEditorCommands) {
+          controller: ['$scope', 'aceEditorCommands', function ($scope, aceEditorCommands) {
 
             var appVersion = 'navigator' in window && 'appVersion' in navigator && navigator.appVersion.toLowerCase() || '';
-            
+
             var isWindows = function () {
               return /win/i.test(appVersion);
             };
@@ -203,28 +203,28 @@ angular.module('palette', ['ngSanitize'])
 
             function addNewCommands(newCommands) {
               newCommands = newCommands.map(function (it) {
-                it.safeHtml=it.name;
+                it.safeHtml = it.name;
                 //console.log($sce.trustAsHtml("Command Name<span style='position:fixed; right:2em'>CTRL+R</span>" ));
                 
-                var getPlatform=function(){
+                var getPlatform = function () {
                   if (isMac()) return 'mac';
                   if (isWindows()) return 'win';
                   if (isLinux()) return 'linux';
-                  
+
                   return 'unknown';
                 }
-                
-                var platform=getPlatform();
-                var getShortcutsHtml=function (bindKey){
-                  return "<span class='palette-shortcuts'>"+bindKey[platform] || ""+"</span>"
+
+                var platform = getPlatform();
+                var getShortcutsHtml = function (bindKey) {
+                  return "<span class='palette-shortcuts'>" + bindKey[platform] || "" + "</span>"
                 }
-                
-               it.safeHtml=it.name+  (it.bindKey?getShortcutsHtml(it.bindKey):"")
-               
+
+                it.safeHtml = it.name + (it.bindKey ? getShortcutsHtml(it.bindKey) : "")
+
                 return it;
               })
 
-              
+
               $scope.commands.push.apply($scope.commands, newCommands);
             }
 
@@ -287,11 +287,11 @@ angular.module('palette', ['ngSanitize'])
             };
 
             $scope.open = function () {
-              $scope.commands=[];
-              
-              var cmds=paletteService.getCommands();
-              console.log('paletteService,getCommands',cmds);
-              
+              $scope.commands = [];
+
+              var cmds = paletteService.getCommands();
+              console.log('paletteService,getCommands', cmds);
+
               addNewCommands(aceEditorCommands.getCommands());
               addNewCommands(cmds);
 
@@ -345,27 +345,27 @@ angular.module('palette', ['ngSanitize'])
 // }
 //add by qinghai
 function hookAceFocusAndBlurEvent() {
-    if (!ace) return;
-    
-    var oldEditFunc=ace.edit;
-    var newAceEdit=function(e){
-      var editor=oldEditFunc(e)
-      if (editor["__paletteFocusEventSetup"])
-         return editor;
-      
-      editor.on("focus",function(){
-          ace["__paletteFocusEditor"]=editor;
-      });
-      
-      editor.on("blur",function(){
-          ace["__paletteFocusEditor"]=editor;
-      });
-      editor["__paletteFocusEventSetup"]=true;
-      
+  if (!ace) return;
+
+  var oldEditFunc = ace.edit;
+  var newAceEdit = function (e) {
+    var editor = oldEditFunc(e)
+    if (editor["__paletteFocusEventSetup"])
       return editor;
-    }
-    
-    ace.edit=newAceEdit.bind(ace);
+
+    editor.on("focus", function () {
+      ace["__paletteFocusEditor"] = editor;
+    });
+
+    editor.on("blur", function () {
+      ace["__paletteFocusEditor"] = editor;
+    });
+    editor["__paletteFocusEventSetup"] = true;
+
+    return editor;
+  }
+
+  ace.edit = newAceEdit.bind(ace);
 };
 
 hookAceFocusAndBlurEvent();
@@ -373,9 +373,11 @@ hookAceFocusAndBlurEvent();
 angular.module('palette')
   .factory('aceEditorCommands', ['$timeout', function ($timeout) {
     return {
+
+
       getCommands: function () {
         var commands = [];
-        
+
         if (!ace) return [];
 
         var editor = ace.__paletteFocusEditor;
@@ -385,17 +387,126 @@ angular.module('palette')
           return function () {
             var theEditor = ace.__paletteFocusEditor;
             //theEditor.setFocus();
-            window["curEditor"]=theEditor;
+            window["curEditor"] = theEditor;
             return theEditor.execCommand(commandName);
           }
         }
-        
+
+        var aceCommandNamingMap = {
+          "showSettingsMenu": "showSettingsMenu",
+          "goToNextError": "goToNextError",
+          "goToPreviousError": "goToPreviousError",
+          "selectall": "selectAll",
+          "centerselection": "centerSelection",
+          "gotoline": "gotoLine",
+          "fold": "fold",
+          "unfold": "unfold",
+          "toggleFoldWidget": "toggleFoldWidget",
+          "toggleParentFoldWidget": "toggleParentFoldWidget",
+          "foldall": "foldAll",
+          "foldOther": "foldOther",
+          "unfoldall": "unfoldAll",
+          "findnext": "findNext",
+          "findprevious": "findPrevious",
+          "selectOrFindNext": "selectOrFindNext",
+          "selectOrFindPrevious": "selectOrFindPrevious",
+          "find": "find",
+          "overwrite": "overwrite",
+          "selecttostart": "selectToStart",
+          "gotostart": "gotoStart",
+          "selectup": "selectUp",
+          "golineup": "goLineUp",
+          "selecttoend": "selectToEnd",
+          "gotoend": "gotoEnd",
+          "selectdown": "selectDown",
+          "golinedown": "goLineDown",
+          "selectwordleft": "selectWordLeft",
+          "gotowordleft": "gotoWordLeft",
+          "selecttolinestart": "selectToLineStart",
+          "gotolinestart": "gotoLineStart",
+          "selectleft": "selectLeft",
+          "gotoleft": "gotoLeft",
+          "selectwordright": "selectWordRight",
+          "gotowordright": "gotoWordRight",
+          "selecttolineend": "selectToLineEnd",
+          "gotolineend": "gotoLineEnd",
+          "selectright": "selectRight",
+          "gotoright": "gotoRight",
+          "selectpagedown": "selectPageDown",
+          "pagedown": "pageDown",
+          "gotopagedown": "gotoPageDown",
+          "selectpageup": "selectPageUp",
+          "pageup": "pageUp",
+          "gotopageup": "gotoPageUp",
+          "scrollup": "scrollUp",
+          "scrolldown": "scrollDown",
+          "selectlinestart": "selectLineStart",
+          "selectlineend": "selectLineEnd",
+          "togglerecording": "toggleRecording",
+          "replaymacro": "replayMacro",
+          "jumptomatching": "jumpToMatching",
+          "selecttomatching": "selectToMatching",
+          "expandToMatching": "expandToMatching",
+          "passKeysToBrowser": "passKeysToBrowser",
+          "copy": "copy",
+          "cut": "cut",
+          "paste": "paste",
+          "removeline": "removeLine",
+          "duplicateSelection": "duplicateSelection",
+          "sortlines": "sortLines",
+          "togglecomment": "toggleComment",
+          "toggleBlockComment": "toggleBlockComment",
+          "modifyNumberUp": "modifyNumberUp",
+          "modifyNumberDown": "modifyNumberDown",
+          "replace": "replace",
+          "undo": "undo",
+          "redo": "redo",
+          "copylinesup": "copyLinesUp",
+          "movelinesup": "moveLinesUp",
+          "copylinesdown": "copyLinesDown",
+          "movelinesdown": "moveLinesDown",
+          "del": "del",
+          "backspace": "backspace",
+          "cut_or_delete": "cut_or_delete",
+          "removetolinestart": "removeToLineStart",
+          "removetolineend": "removeToLineEnd",
+          "removewordleft": "removeWordLeft",
+          "removewordright": "removeWordRight",
+          "outdent": "outdent",
+          "indent": "indent",
+          "blockoutdent": "blockOutdent",
+          "blockindent": "blockIndent",
+          "insertstring": "insertString",
+          "inserttext": "insertText",
+          "splitline": "splitLine",
+          "transposeletters": "transposeLetters",
+          "touppercase": "toUpperCase",
+          "tolowercase": "toLowerCase",
+          "expandtoline": "expandToLine",
+          "joinlines": "joinLines",
+          "invertSelection": "invertSelection",
+          "addCursorAbove": "addCursorAbove",
+          "addCursorBelow": "addCursorBelow",
+          "addCursorAboveSkipCurrent": "addCursorAboveSkipCurrent",
+          "addCursorBelowSkipCurrent": "addCursorBelowSkipCurrent",
+          "selectMoreBefore": "selectMoreBefore",
+          "selectMoreAfter": "selectMoreAfter",
+          "selectNextBefore": "selectNextBefore",
+          "selectNextAfter": "selectNextAfter",
+          "splitIntoLines": "splitIntoLines",
+          "alignCursors": "alignCursors",
+          "findAll": "findAll"
+        }        
+        //var lines=[];
         //var platform=editor.commands.platform;
         var cmds = Object.keys(editor.commands.commands).map(function (key) {
           var command = editor.commands.commands[key];
+          //console.log("ace command",key, _.startCase(key));
+          
+          //lines.push('"'+key+'"'+":"+'"'+key+'";');
 
           return {
-            name: command.name,
+            name: _.startCase(aceCommandNamingMap[key]?aceCommandNamingMap[key]:key),
             bindKey: command.bindKey,
             cmd: function () {
               $timeout(function () {
@@ -404,7 +515,7 @@ angular.module('palette')
             }
           }
         });
-        // console.log('ace commands', cmds);
+        //console.log('ace commands', lines.join("\n"));
         
         
         commands.push.apply(commands, cmds);
@@ -413,3 +524,5 @@ angular.module('palette')
       }
     };
   }])
+
+

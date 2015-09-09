@@ -10,6 +10,7 @@
   "dependencies": {
     "angular": "~1.0.6",
     "angular-sanitize": "~1.4.5",
+    "lodash": "~3.10.1",
     "mousetrap": "~1.4.2"
   }
 }
