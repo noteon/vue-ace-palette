@@ -1,4 +1,4 @@
-## angular-palette
+## angular-ace-palette
 
 ### What Is It?
 
@@ -52,44 +52,6 @@ when the expression passed is true
 You're welcome to use any of the other directives included but the important things
 are the palette directive and the paletteService.
 
-When you've got everything installed the first thing to do is adding your routes to the
-palette. This is simply done by adding a name property to the routes you have defined
-
-**Example:**
-
-    angular.module('myApp', ['palette'])
-      .config(function ($routeProvider) {
-        $routeProvider
-          .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl',
-            name: 'Main Page'
-          })
-          .when('/something', {
-            templateUrl: 'views/something.html',
-            controller: 'SomethingCtrl',
-            name: 'Something Page'
-          })
-          .when('/first', {
-            templateUrl: 'views/first.html',
-            controller: 'FirstCtrl',
-            name: 'First Page'
-          })
-          .when('/thirdly', {
-            templateUrl: 'views/thirdly.html',
-            controller: 'ThirdlyCtrl',
-            name: 'The Thirdly Page'
-          })
-          .when('/item/:id', {
-            templateUrl: 'views/item.html',
-            controller: 'ItemCtrl'
-          })
-          .otherwise({
-            redirectTo: '/'
-          });
-      });
-
-That's it!
 
 If you want to export some commands to the palette you can do that with the paletteService
 
@@ -105,9 +67,11 @@ and you try exporting from multiple that wont work.
           alert('called from the palette!');
         }
 
-        paletteService.exportCommands([
+        paletteService.addCommands([
           {
             name: "Notify: Alert Message",
+            winShortcuts:['CTRL+R'],
+            macShortcuts:['CMD+R'],
             cmd: function () {
               $scope.makeMessage();
             },

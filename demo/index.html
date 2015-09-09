@@ -33,14 +33,34 @@
   <h4>CTRL + SHIFT + P or CMD + SHIFT + P (sorry opera)</h4>
 
 
-  <div class="hero-unit" ng-controller="MainCtrl">
+  <div ng-controller="MainCtrl">
     <button ng-click="clearCommands()">Clear Commands</button>
     <button ng-click="addCommands()">Add New Commands</button>
 
     <hr/>
     <h1>Main Page</h1>
     <p>Use the shortcut keys in the upper left!</p>
+    <div id='aceEditor1' class='aceEditor'">$scope.parseTextCommand = function (query) {
+  if (query[0] === ':') {
+  var newQuery = parseInt(query.slice(1), 10);
+  window.scrollTo(0, newQuery);
+  }
+};
+      
+    </div>
+    <div id='aceEditor2' class='aceEditor'">$scope.parseTextCommand = function (query) {
+  if (query[0] === ':') {
+  var newQuery = parseInt(query.slice(1), 10);
+  window.scrollTo(0, newQuery);
+  }
+};
+      
+    </div>
   </div>
+  
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
 
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -48,6 +68,9 @@
   <script src="../angular-palette.js"></script>
 
   <script>
+    ace.edit("aceEditor1");
+    ace.edit("aceEditor2");
+    
     require('./index');
   </script>
 </body>
