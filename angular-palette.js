@@ -16,21 +16,7 @@ angular.module('palette', ['ngSanitize'])
 
     return {
 
-      subscribedMethod: undefined,
-
-      // exportCommands: function (newCommands) {
-      //   if(typeof this.subscribedMethod !== 'undefined'){
-      //     this.subscribedMethod(newCommands, oldCommands);
-      //   }
-      //   oldCommands = newCommands;
-      // },
-      
       addCommands: function (newCommands) {
-        if (typeof this.subscribedMethod !== 'undefined') {
-          
-          this.subscribedMethod(newCommands, []);
-        }
-
         oldCommands.push.apply(oldCommands, newCommands);
       },
       
@@ -44,11 +30,7 @@ angular.module('palette', ['ngSanitize'])
 
       getCommands: function () {
         return oldCommands;
-      },
-      subscribe: function (fn) {
-        // console.log('Setting up subscribe ', fn);
-        this.subscribedMethod = fn;
-      }
+      }      
     };
 
   }])
@@ -202,27 +184,6 @@ angular.module('palette', ['ngSanitize'])
             // some placeholder commands for the moment
             $scope.commands = [];
 
-            // function addRoutesToPallete() {
-            //   for (var path in $route.routes) {
-            //     var route = $route.routes[path];
-
-            //     if (typeof route.name !== 'undefined') {
-            //       var routerName = 'Goto: ' + route.name;
-
-            //       $scope.commands.push({
-            //         name: routerName,
-            //         safeHtml: routerName,
-            //         cmd: 'link',
-            //         data: path
-            //       });
-            //     }
-            //   }
-            // }
-
-            function removeOldCommands(oldCommands) {
-              $scope.commands.splice(-oldCommands.length, oldCommands.length);
-            }
-
             function addNewCommands(newCommands) {
               newCommands = newCommands.map(function (it) {
                 it.safeHtml=it.name;
@@ -246,11 +207,6 @@ angular.module('palette', ['ngSanitize'])
               $scope.commands.push.apply($scope.commands, newCommands);
             }
 
-            paletteService.subscribe(function (newCommands, oldCommands) {
-              console.log('paletteService.subscribe',newCommands);
-              removeOldCommands(oldCommands);
-              addNewCommands(newCommands);
-            });
 
             $scope.activeCmd = 0;
             //addRoutesToPallete();
@@ -310,6 +266,9 @@ angular.module('palette', ['ngSanitize'])
             };
 
             $scope.open = function () {
+              $scope.commands=[];
+              addNewCommands(paletteService.getCommands());
+
               $scope.query = '';
               $scope.visible = true;
               $scope.activeCmd = 0;
@@ -336,14 +295,6 @@ angular.module('palette', ['ngSanitize'])
                 }
               }
             };
-
-            // $scope.link = function (path) {
-            //   $location.path(path);
-            // };
-
-            // $scope.extLink = function (path) {
-            //   window.location = path;
-            // };
 
             $scope.parseTextCommand = function (query) {
               if (query[0] === ':') {

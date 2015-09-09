@@ -5,9 +5,6 @@ angular.module('angularPaletteDemoApp', ['palette']);
 angular.module('angularPaletteDemoApp')
   .controller('MainCtrl', ['$scope','paletteService','$timeout', function($scope, paletteService,$timeout) {
     
-    
-    
-    
     $scope.makeMessage = function () {
       alert('called from the palette!');
     }
@@ -35,8 +32,7 @@ angular.module('angularPaletteDemoApp')
   }]);
     
 angular.module('angularPaletteDemoApp')
-  .controller('commandsCtrl', ['paletteService','$timeout', function( paletteService,$timeout) {
-    $timeout(function(){
+  .controller('commandsCtrl', ['paletteService',function( paletteService,$timeout) {
       paletteService.addCommands([
         {
           name: "Edit Replace ...",
@@ -48,6 +44,5 @@ angular.module('angularPaletteDemoApp')
           data: 'something'
         }
       ]);
-    },100)
     
   }]);    
