@@ -1,7 +1,7 @@
 {
   "name": "angular-ace-palette",
   "version": "0.2.0",
-  "main": "angular-palette.js",
+  "main": "angular-ace-palette.js",
   "ignore": [
     "**/.*",
     "node_modules",
