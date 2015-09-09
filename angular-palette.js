@@ -3,8 +3,7 @@
 //command
 // interface command{
 //   name:string;
-//   winShortcuts:string[];
-//   macShortcuts:string[];
+//   bindKey:{mac:string, win:string}
 //   cmd:Function
 //   data:any;
 // }
@@ -176,7 +175,7 @@ angular.module('palette', ['ngSanitize'])
 
           },
 
-          controller: ['$scope', function ($scope) {
+          controller: ['$scope','aceEditorCommands', function ($scope,aceEditorCommands) {
 
             var appVersion = 'navigator' in window && 'appVersion' in navigator && navigator.appVersion.toLowerCase() || '';
             
@@ -205,19 +204,23 @@ angular.module('palette', ['ngSanitize'])
             function addNewCommands(newCommands) {
               newCommands = newCommands.map(function (it) {
                 it.safeHtml=it.name;
-                //console.log($sce.trustAsHtml("Command Name<span style='position:fixed; right:1em'>CTRL+R</span>" ));
+                //console.log($sce.trustAsHtml("Command Name<span style='position:fixed; right:2em'>CTRL+R</span>" ));
                 
-                var getShortcutsHtml=function (shortcuts){
-                  return "<span class='palette-shortcuts'>"+shortcuts.join("|")+"</span>"
+                var getPlatform=function(){
+                  if (isMac()) return 'mac';
+                  if (isWindows()) return 'win';
+                  if (isLinux()) return 'linux';
+                  
+                  return 'unknown';
                 }
                 
+                var platform=getPlatform();
+                var getShortcutsHtml=function (bindKey){
+                  return "<span class='palette-shortcuts'>"+bindKey[platform] || ""+"</span>"
+                }
                 
-                if (isMac() && it.macShortcuts){
-                  it.safeHtml=it.name+getShortcutsHtml(it.macShortcuts)
-                }else if (isWindows() && it.winShortcuts){
-                  it.safeHtml=it.name+getShortcutsHtml(it.winShortcuts)
-                }  
-
+               it.safeHtml=it.name+  (it.bindKey?getShortcutsHtml(it.bindKey):"")
+               
                 return it;
               })
 
@@ -285,7 +288,12 @@ angular.module('palette', ['ngSanitize'])
 
             $scope.open = function () {
               $scope.commands=[];
-              addNewCommands(paletteService.getCommands());
+              
+              var cmds=paletteService.getCommands();
+              console.log('paletteService,getCommands',cmds);
+              
+              addNewCommands(aceEditorCommands.getCommands());
+              addNewCommands(cmds);
 
               $scope.query = '';
               $scope.visible = true;

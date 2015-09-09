@@ -31,18 +31,11 @@ angular.module('angularPaletteDemoApp')
 
   }]);
     
-angular.module('angularPaletteDemoApp')
-  .controller('commandsCtrl', ['paletteService',function( paletteService,$timeout) {
-      paletteService.addCommands([
-        {
-          name: "Edit Replace ...",
-          winShortcuts:['CTRL+R'],
-          macShortcuts:['⌘+R'],
-          cmd: function () {
-            alert('called from the palette!');
-          },
-          data: 'something'
-        }
-      ]);
+// angular.module('angularPaletteDemoApp')
+//   .controller('commandsCtrl', ['paletteService','aceEditorCommands',function( paletteService,aceEditorCommands) {
+//       var cmds=aceEditorCommands.getCommands();
+//       //console.log("aceEditorCommands.getCommands",cmds);
+     
+//        paletteService.addCommands(cmds);
     
-  }]);    
+//   }]);    

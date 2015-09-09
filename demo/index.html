@@ -28,7 +28,7 @@
     <![endif]-->
 
   <!-- Add your site or application content here -->
-  <div ng-controller="commandsCtrl"><palette></palette></div>
+  <palette></palette>
 
   <h4>CTRL + SHIFT + P or CMD + SHIFT + P (sorry opera)</h4>
 
@@ -67,9 +67,13 @@
   <script src="../bower_components/mousetrap/mousetrap.js"></script>
   <script src="../bower_components/mousetrap/plugins/global-bind/mousetrap-global-bind.js"></script>
   <script src="../angular-palette.js"></script>
+  <script src="../angular-ace-commands.js"></script>
 
   <script>
+    
+    
     ace.edit("aceEditor1");
+    
     ace.edit("aceEditor2");
     
     require('./index');
