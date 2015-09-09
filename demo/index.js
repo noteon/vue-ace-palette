@@ -1,59 +1,53 @@
 
 
-angular.module('angularPaletteDemoApp', ['palette','ngRoute'])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        name: 'Main Page'
-      })
-      .when('/first', {
-        templateUrl: 'views/first.html',
-        controller: 'FirstCtrl',
-        name: 'First Page'
-      })
-      .when('/thirdly', {
-        templateUrl: 'views/thirdly.html',
-        controller: 'ThirdlyCtrl',
-        name: 'The Thirdly Page'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+angular.module('angularPaletteDemoApp', ['palette']);
   
 angular.module('angularPaletteDemoApp')
-  .controller('MainCtrl', ['$scope','paletteService','aceEditCommands', function($scope, paletteService,aceEditCommands) {
+  .controller('MainCtrl', ['$scope','paletteService','$timeout', function($scope, paletteService,$timeout) {
+    
+    
+    
+    
     $scope.makeMessage = function () {
       alert('called from the palette!');
     }
+    
+    $scope.clearCommands=function(){
+     // console.log("clearCommands");
+      paletteService.clearCommands();
+    }
+    
+    $scope.addCommands=function(){
+     // console.log("addCommands");
+     
+      paletteService.addCommands([
+        {
+          name: "New Command: Alert Message",
+          cmd: function () {
+            $scope.makeMessage();
+          },
+          data: 'something'
+        }
+      ]);
+      
+    }
 
-    paletteService.addCommands([
-      {
-        name: "Notify: Alert Message",
-        cmd: function () {
-          $scope.makeMessage();
-        },
-        data: 'something'
-      }
-    ]);
   }]);
     
-  
 angular.module('angularPaletteDemoApp')
-  .service('aceEditCommands', ['paletteService', function(paletteService) {
-    paletteService.addCommands([
-      {
-        name: "Edit Replace ...",
-        winShortcuts:['CTRL+R'],
-        macShortcuts:['⌘+R'],
-        cmd: function () {
-          alert('called from the palette!');
-        },
-        data: 'something'
-      }
-    ]);
-
-    return;
+  .controller('commandsCtrl', ['paletteService','$timeout', function( paletteService,$timeout) {
+    $timeout(function(){
+      paletteService.addCommands([
+        {
+          name: "Edit Replace ...",
+          winShortcuts:['CTRL+R'],
+          macShortcuts:['⌘+R'],
+          cmd: function () {
+            alert('called from the palette!');
+          },
+          data: 'something'
+        }
+      ]);
+    },100)
+    
   }]);    

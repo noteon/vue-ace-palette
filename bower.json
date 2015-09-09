@@ -9,7 +9,6 @@
   ],
   "dependencies": {
     "angular": "~1.0.6",
-    "angular-route": "~1.4.5",
     "angular-sanitize": "~1.4.5",
     "mousetrap": "~1.4.2"
   }

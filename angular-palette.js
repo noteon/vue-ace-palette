@@ -5,7 +5,7 @@
 //   name:string;
 //   winShortcuts:string[];
 //   macShortcuts:string[];
-//   cmd:string|Function
+//   cmd:Function
 //   data:any;
 // }
 
@@ -27,10 +27,19 @@ angular.module('palette', ['ngSanitize'])
       
       addCommands: function (newCommands) {
         if (typeof this.subscribedMethod !== 'undefined') {
+          
           this.subscribedMethod(newCommands, []);
         }
 
         oldCommands.push.apply(oldCommands, newCommands);
+      },
+      
+      clearCommands:function(){
+        if (typeof this.subscribedMethod !== 'undefined') {
+          this.subscribedMethod([], oldCommands);
+        }
+        
+        return oldCommands=[];
       },
 
       getCommands: function () {
@@ -127,8 +136,8 @@ angular.module('palette', ['ngSanitize'])
     };
   })
   .directive('palette',
-    ['$sce', '$timeout', '$location', '$route', 'paletteService',
-      function ($sce, $timeout, $location, $route, paletteService) {
+    ['$sce', '$timeout', 'paletteService',
+      function ($sce, $timeout, paletteService) {
         return {
           restrict: 'EA',
           replace: true,
@@ -189,27 +198,26 @@ angular.module('palette', ['ngSanitize'])
               DOWN_ARROW_KEY = 40,
               ESCAPE_KEY = 27;
 
-            window["scope"] = $scope;
             $scope.visible = false;
             // some placeholder commands for the moment
             $scope.commands = [];
 
-            function addRoutesToPallete() {
-              for (var path in $route.routes) {
-                var route = $route.routes[path];
+            // function addRoutesToPallete() {
+            //   for (var path in $route.routes) {
+            //     var route = $route.routes[path];
 
-                if (typeof route.name !== 'undefined') {
-                  var routerName = 'Goto: ' + route.name;
+            //     if (typeof route.name !== 'undefined') {
+            //       var routerName = 'Goto: ' + route.name;
 
-                  $scope.commands.push({
-                    name: routerName,
-                    safeHtml: routerName,
-                    cmd: 'link',
-                    data: path
-                  });
-                }
-              }
-            }
+            //       $scope.commands.push({
+            //         name: routerName,
+            //         safeHtml: routerName,
+            //         cmd: 'link',
+            //         data: path
+            //       });
+            //     }
+            //   }
+            // }
 
             function removeOldCommands(oldCommands) {
               $scope.commands.splice(-oldCommands.length, oldCommands.length);
@@ -234,16 +242,18 @@ angular.module('palette', ['ngSanitize'])
                 return it;
               })
 
+              
               $scope.commands.push.apply($scope.commands, newCommands);
             }
 
             paletteService.subscribe(function (newCommands, oldCommands) {
+              console.log('paletteService.subscribe',newCommands);
               removeOldCommands(oldCommands);
               addNewCommands(newCommands);
             });
 
             $scope.activeCmd = 0;
-            addRoutesToPallete();
+            //addRoutesToPallete();
 
             $scope.paletteInputKeyHandler = function (e) {
               if (e.keyCode === UP_ARROW_KEY) {
@@ -327,13 +337,13 @@ angular.module('palette', ['ngSanitize'])
               }
             };
 
-            $scope.link = function (path) {
-              $location.path(path);
-            };
+            // $scope.link = function (path) {
+            //   $location.path(path);
+            // };
 
-            $scope.extLink = function (path) {
-              window.location = path;
-            };
+            // $scope.extLink = function (path) {
+            //   window.location = path;
+            // };
 
             $scope.parseTextCommand = function (query) {
               if (query[0] === ':') {
