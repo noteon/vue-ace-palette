@@ -253,6 +253,8 @@ angular.module('palette', ['ngSanitize'])
                      shortCut=shortCut.replace(/Down/g,"↓");
                      shortCut=shortCut.replace(/Left/g,"←");
                      shortCut=shortCut.replace(/right/g,"→");
+                     shortCut=shortCut.replace(/Backspace/g,"⌫");
+                     
                      // shortCut=shortCut.replace(/Ctrl/g,"Ctrl");
                      // shortCut=shortCut.replace(/Shift/g,"⇧");
                      // shortCut=shortCut.replace(/Alt/g,"⌥");
