@@ -104,21 +104,28 @@ angular.module('palette', ['ngSanitize'])
     }
 
     return function (value, query) {
-
       var theValue = value ? value : "";
-      var lowerQuery = query ? query.toLowerCase() : "";
 
       var parts = theValue.split("<span");
       var namePart = parts[0];
       var shortcutPart = parts[1] ? "<span" + parts[1] : "";
 
 
-      if (typeof lowerQuery !== 'undefined' && lowerQuery !== '') {
-        //console.log('drHighlight', namePart, lowerQuery);
-        var ind = namePart.toLowerCase().indexOf(lowerQuery);
-        if (ind !== -1) {
-          return wrapText(ind, namePart, '<span class="palettematch">', '</span>', lowerQuery.length) + shortcutPart;
+      if (typeof query !== 'undefined' && query !== '') {
+        var reg=new RegExp(query.split('').join('\\s?'),'i');
+        var execRst=reg.exec(namePart);
+        var ind=execRst.index;
+        
+        if (ind>-1){
+          return wrapText(ind, namePart, '<span class="palettematch">', '</span>', execRst[0].length) + shortcutPart;
         }
+        
+        //  //console.log('drHighlight', namePart, query);
+         
+        //  var ind = namePart.toLowerCase().indexOf(query);
+        // if (ind !== -1) {
+        //   return wrapText(ind, namePart, '<span class="palettematch">', '</span>', query.length) + shortcutPart;
+        // }
       }
       return value;
     };
@@ -140,7 +147,7 @@ angular.module('palette', ['ngSanitize'])
 
             '<div class="palette-results" ng-show="filteredCommands.length">',
             '<div class="palette-item"',
-            'ng-repeat="command in (filteredCommands = (commands | orderBy: ' + "'name'" + '| filter:query ))"',
+            'ng-repeat="command in (filteredCommands = (commands | orderBy: ' + "'name'" + '| filter:filterStartCaseName ))"',
             'ng-class="{selected: $index == activeCmd}"',
             'ng-bind-html="command.safeHtml | drHighlight:query.name"',
             'dr-scroll-to-contain="{{$index == activeCmd}}"',
@@ -207,6 +214,20 @@ angular.module('palette', ['ngSanitize'])
             $scope.visible = false;
             // some placeholder commands for the moment
             $scope.commands = [];
+            
+            //function(value, index, array)
+            $scope.filterStartCaseName=function(value,index,array){
+               var query=$scope.query && $scope.query.name;
+               
+              //console.log('filter','value',value, 'query',query);
+              
+              if (!query) return true;
+              
+              if (!value) return false;
+              
+              return value.name && (value.name.replace(/ /g,'').toLowerCase().indexOf(query.toLowerCase())>-1)
+                 
+            }
 
             function addNewCommands(newCommands) {
               newCommands = newCommands.map(function (it) {
