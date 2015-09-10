@@ -151,7 +151,7 @@ angular.module('palette', ['ngSanitize'])
             'ng-class="{selected: $index == activeCmd}"',
             'ng-bind-html="command.safeHtml | drHighlight:query.name"',
             'dr-scroll-to-contain="{{$index == activeCmd}}"',
-            'ng-click="useSelection(command)">',
+            'ng-click="clickCommand(command)">',
             '</div>',
             '</div>',
             '</div>',
@@ -244,7 +244,24 @@ angular.module('palette', ['ngSanitize'])
 
                 var platform = getPlatform();
                 var getShortcutsHtml = function (bindKey) {
-                  return "<span class='palette-shortcuts'>" + bindKey[platform] || "" + "</span>"
+                  var shortCut=_.isString(bindKey)?bindKey:bindKey[platform];
+                  if (!shortCut) return "";
+                  
+                  if (shortCut && (platform==='mac')) {
+                     shortCut=shortCut.replace(/Command/g,"⌘");
+                     shortCut=shortCut.replace(/Up/g,"↑");
+                     shortCut=shortCut.replace(/Down/g,"↓");
+                     shortCut=shortCut.replace(/Left/g,"←");
+                     shortCut=shortCut.replace(/right/g,"→");
+                     // shortCut=shortCut.replace(/Ctrl/g,"Ctrl");
+                     // shortCut=shortCut.replace(/Shift/g,"⇧");
+                     // shortCut=shortCut.replace(/Alt/g,"⌥");
+                     // shortCut=shortCut.replace(/Option/g,"⌥");
+                     // shortCut=shortCut.replace(/Ctrl/g,"⌃");
+                     
+                  }
+                  
+                  return "<span class='palette-shortcuts'>" + shortCut || "" + "</span>"
                 }
 
                 it.safeHtml =it.name + (it.bindKey ? getShortcutsHtml(it.bindKey) : "");
@@ -361,6 +378,12 @@ angular.module('palette', ['ngSanitize'])
                 }
               }
             };
+            
+            $scope.clickCommand= function(selection){
+              $scope.useSelection(selection);
+              
+              $scope.close();
+            }
 
             $scope.parseTextCommand = function (query) {
               if (query[0] === ':') {
