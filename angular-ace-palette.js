@@ -450,6 +450,8 @@ angular.module('palette')
         var exec = function (commandName) {
           return function () {
             var theEditor = ace.__paletteFocusEditor;
+            if (!theEditor) return;
+            
             theEditor.focus();
             //window["curEditor"] = theEditor;
             return theEditor.execCommand(commandName);
@@ -457,7 +459,7 @@ angular.module('palette')
         }
 
         var aceCommandNamingMap = {
-          "showSettingsMenu": "showSettingsMenu",
+          //"showSettingsMenu": "showSettingsMenu",
           "goToNextError": "goToNextError",
           "goToPreviousError": "goToPreviousError",
           "selectall": "selectAll",
@@ -506,8 +508,8 @@ angular.module('palette')
           "scrolldown": "scrollDown",
           "selectlinestart": "selectLineStart",
           "selectlineend": "selectLineEnd",
-          "togglerecording": "toggleRecording",
-          "replaymacro": "replayMacro",
+          //"togglerecording": "toggleRecording",
+          //"replaymacro": "replayMacro",
           "jumptomatching": "jumpToMatching",
           "selecttomatching": "selectToMatching",
           "expandToMatching": "expandToMatching",
@@ -540,8 +542,8 @@ angular.module('palette')
           "indent": "indent",
           "blockoutdent": "blockOutdent",
           "blockindent": "blockIndent",
-          "insertstring": "insertString",
-          "inserttext": "insertText",
+          //"insertstring": "insertString",
+          //"inserttext": "insertText",
           "splitline": "splitLine",
           "transposeletters": "transposeLetters",
           "touppercase": "toUpperCase",

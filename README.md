@@ -1,7 +1,7 @@
 ## angular-ace-palette
 
 ### What Is It?
-
+   
 
 So I heard you liked the Sublime Text command palette. Me too. So much so, that 
 I thought it was missing from a lot of the web applications I build. 
