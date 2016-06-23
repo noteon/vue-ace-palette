@@ -513,7 +513,7 @@ angular.module('palette')
           "jumptomatching": "jumpToMatching",
           "selecttomatching": "selectToMatching",
           "expandToMatching": "expandToMatching",
-          "passKeysToBrowser": "passKeysToBrowser",
+          "passKeysToBrowser": null,//"passKeysToBrowser",
           "copy": "copy",
           "cut": "cut",
           "paste": "paste",
