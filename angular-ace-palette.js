@@ -451,7 +451,7 @@ angular.module('palette')
           return function () {
             var theEditor = ace.__paletteFocusEditor;
             if (!theEditor) return;
-            
+
             theEditor.focus();
             //window["curEditor"] = theEditor;
             return theEditor.execCommand(commandName);
@@ -459,7 +459,7 @@ angular.module('palette')
         }
 
         var aceCommandNamingMap = {
-          //"showSettingsMenu": "showSettingsMenu",
+          "showSettingsMenu": null,//"showSettingsMenu",
           "goToNextError": "goToNextError",
           "goToPreviousError": "goToPreviousError",
           "selectall": "selectAll",
@@ -508,8 +508,8 @@ angular.module('palette')
           "scrolldown": "scrollDown",
           "selectlinestart": "selectLineStart",
           "selectlineend": "selectLineEnd",
-          //"togglerecording": "toggleRecording",
-          //"replaymacro": "replayMacro",
+          "togglerecording":null,// "toggleRecording",
+          "replaymacro":null,// "replayMacro",
           "jumptomatching": "jumpToMatching",
           "selecttomatching": "selectToMatching",
           "expandToMatching": "expandToMatching",
@@ -542,8 +542,8 @@ angular.module('palette')
           "indent": "indent",
           "blockoutdent": "blockOutdent",
           "blockindent": "blockIndent",
-          //"insertstring": "insertString",
-          //"inserttext": "insertText",
+          "insertstring": null,//"insertString",
+          "inserttext": null,//"insertText",
           "splitline": "splitLine",
           "transposeletters": "transposeLetters",
           "touppercase": "toUpperCase",
@@ -565,6 +565,7 @@ angular.module('palette')
         }        
         var cmds = Object.keys(editor.commands.commands).map(function (key) {
           var command = editor.commands.commands[key];
+          if (aceCommandNamingMap[key]===null) return;
 
           return {
             name: "Editor: "+_.startCase(aceCommandNamingMap[key]?aceCommandNamingMap[key]:key),
@@ -577,7 +578,7 @@ angular.module('palette')
           }
         });
         //console.log('ace commands', lines.join("\n"));
-        
+        cmds=cmds.filter(function(it){return !!it})
         
         commands.push.apply(commands, cmds);
 
