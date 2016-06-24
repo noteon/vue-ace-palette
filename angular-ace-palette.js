@@ -8,6 +8,10 @@
 //   data:any;
 // }
 
+function trimQuery(query){
+   return query && query.replace(/:/g,"").replace(/ /g,"");
+}
+
 angular.module('palette', ['ngSanitize'])
   .factory('paletteService', [function () {
 
@@ -110,14 +114,25 @@ angular.module('palette', ['ngSanitize'])
       var namePart = parts[0];
       var shortcutPart = parts[1] ? "<span" + parts[1] : "";
 
+      query=trimQuery(query);
 
       if (typeof query !== 'undefined' && query !== '') {
+
         var reg=new RegExp(query.split('').join('\\s?'),'i');
-        var execRst=reg.exec(namePart);
+        var replaceColonNamePart=namePart.replace(":","");
+
+        var execRst=reg.exec(replaceColonNamePart);
         var ind=execRst.index;
         
         if (ind>-1){
-          return wrapText(ind, namePart, '<span class="palettematch">', '</span>', execRst[0].length) + shortcutPart;
+           var colonIdx=namePart.indexOf(":");
+           var lenPlusOne=(colonIdx>ind && colonIdx<=(ind+execRst[0].length));
+           var len= execRst[0].length+(lenPlusOne?1:0);
+
+           if (ind>=(colonIdx+1))
+              ind++;
+
+           return wrapText(ind, namePart, '<span class="palettematch">', '</span>', len) + shortcutPart;
         }
         
         //  //console.log('drHighlight', namePart, query);
@@ -219,13 +234,13 @@ angular.module('palette', ['ngSanitize'])
             $scope.filterStartCaseName=function(value,index,array){
                var query=$scope.query && $scope.query.name;
                
-              //console.log('filter','value',value, 'query',query);
-              
               if (!query) return true;
               
               if (!value) return false;
+
+              query=trimQuery(query);
               
-              return value.name && (value.name.replace(/ /g,'').toLowerCase().indexOf(query.toLowerCase())>-1)
+              return value.name && (value.name.replace(/( |: )/g,'').toLowerCase().indexOf(query.toLowerCase())>-1)
                  
             }
 
