@@ -9,7 +9,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Angular Palette Demo</title>
+  <title>Vuejs Palette Demo</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="../styles/palette-darksoda.css">
 </head>
 
-<body ng-app="angularPaletteDemoApp">
+<body>
   <!--[if lt IE 7]>
       <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
     <![endif]-->
@@ -28,14 +28,14 @@
     <![endif]-->
 
   <!-- Add your site or application content here -->
-  <palette></palette>
+  <div id="palette"></div>>
 
   <h4> CTRL + SHIFT + P or CMD + SHIFT + P (sorry opera)</h4>
 
 
-  <div ng-controller="MainCtrl">
-    <button ng-click="clearCommands()">Clear Commands</button>
-    <button ng-click="addCommands()">Add New Commands</button>
+  <div>
+    <!--<button ng-click="clearCommands()">Clear Commands</button>
+    <button ng-click="addCommands()">Add New Commands</button>-->
 
     <hr/>
     <h1>Main Page</h1>
@@ -62,19 +62,22 @@
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
 
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <!--<script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>-->
   <script src="../bower_components/mousetrap/mousetrap.js"></script>
   <script src="../bower_components/mousetrap/plugins/global-bind/mousetrap-global-bind.js"></script>
-  <script src="../bower_components/lodash/lodash.min.js"></script>
-  <script src="../angular-ace-palette.js"></script>
 
   <script>
+    window._=require('lodash');
+
+    var palette=require('../vue-ace-palette');
+    new palette.CommandPalette({
+      el:'#palette'
+    })
     ace.edit("aceEditor1").focus();
     
     ace.edit("aceEditor2");
     
-    require('./index');
   </script>
 </body>
 

@@ -1,12 +1,15 @@
 {
-  "name": "angular-ace-palette",
-  "version": "0.3.4",
-  "author": "Derek Ries, qinghai",
-  "homepage": "https://github.com/noteon/angular-palette",
-  "devDependencies": {
-   },
+  "name": "vue-ace-palette",
+  "version": "0.1.0",
+  "author": "qinghai",
+  "homepage": "https://github.com/noteon/vue-ace-palette",
+  "devDependencies": {},
   "scripts": {
     "start": "electron ./demo/main.js"
+  },
+  "dependencies": {
+    "lodash": "^4.14.0",
+    "vue": "^1.0.26",
+    "vue-typescript": "^0.6.1"
   }
-
 }

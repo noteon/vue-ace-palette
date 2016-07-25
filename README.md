@@ -1,4 +1,4 @@
-## angular-ace-palette
+## vue-ace-palette
 
 ### What Is It?
    
