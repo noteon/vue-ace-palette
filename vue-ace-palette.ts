@@ -210,7 +210,7 @@ import { VueComponent, Prop, Watch } from 'vue-typescript'
       },
     }
 })
-export class CommandPalette extends Vue {
+export class CommandPalette {
   visible: boolean = false;
   commands = [];
   query = "";

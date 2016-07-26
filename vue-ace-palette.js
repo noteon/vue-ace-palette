@@ -1,9 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -172,13 +167,9 @@ function getAceCommands() {
     commands.push.apply(commands, cmds);
     return commands;
 }
-/// <reference path="../../../../typings/app.d.ts"/>
-var Vue = require('vue');
 var vue_typescript_1 = require('vue-typescript');
-var CommandPalette = (function (_super) {
-    __extends(CommandPalette, _super);
+var CommandPalette = (function () {
     function CommandPalette() {
-        _super.apply(this, arguments);
         this.visible = false;
         this.commands = [];
         this.query = "";
@@ -423,7 +414,7 @@ var CommandPalette = (function (_super) {
         })
     ], CommandPalette);
     return CommandPalette;
-}(Vue));
+}());
 exports.CommandPalette = CommandPalette;
 //command
 // interface command{
