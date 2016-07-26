@@ -1,4 +1,3 @@
-declare namespace VueAcePalette{
     export interface CommandPalette {
         new (options?:any):CommandPalette
         visible: boolean;
@@ -26,8 +25,6 @@ declare namespace VueAcePalette{
        // parseTextCommand(query: any): void;
        // drHighlight(value: any): any;
     }
-
-}
 
 // declare module "vue-ace-palette"{
 //     export=VueAcePalette
