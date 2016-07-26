@@ -1,10 +1,10 @@
 {
   "name": "vue-ace-palette",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "qinghai",
   "homepage": "https://github.com/noteon/vue-ace-palette",
   "devDependencies": {},
-  
+  "typings":"vue-ace-palette.d.ts",
   "scripts": {
     "start": "electron ./demo/main.js"
   },

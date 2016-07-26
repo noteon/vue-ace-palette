@@ -29,6 +29,6 @@ declare namespace VueAcePalette{
 
 }
 
-declare module "vue-ace-palette"{
-    export=VueAcePalette
-}
+// declare module "vue-ace-palette"{
+//     export=VueAcePalette
+// }
