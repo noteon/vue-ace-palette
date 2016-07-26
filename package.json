@@ -1,12 +1,14 @@
 {
   "name": "vue-ace-palette",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "qinghai",
   "homepage": "https://github.com/noteon/vue-ace-palette",
   "devDependencies": {},
   "scripts": {
     "start": "electron ./demo/main.js"
   },
+
+  "main": "vue-ace-palette.js",
   "dependencies": {
     "lodash": "^4.14.0",
     "vue": "^1.0.26",
