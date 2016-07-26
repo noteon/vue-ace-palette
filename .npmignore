@@ -1,0 +1,8 @@
+node_modules
+tmp
+.sass-cache
+components
+bower_components
+*.ts
+tsd.json
+typings
