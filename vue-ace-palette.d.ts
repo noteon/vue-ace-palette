@@ -1,5 +1,3 @@
-/// <reference path="typings/tsd.d.ts" />
-
 declare namespace VueAcePalette{
     export interface CommandPalette {
         new (options?:any):CommandPalette
