@@ -36,6 +36,8 @@ function getAceCommands() {
 
   var editor = ace.__paletteFocusEditor;
   if (!editor) return [];
+  if (!editor.commands) return [];
+  if (!editor.commands.commands) return [];
 
   var exec = function (commandName) {
     return function () {
