@@ -161,9 +161,12 @@ function getAceCommands() {
         var command = editor.commands.commands[key];
         if (aceCommandNamingMap[key] === null)
             return;
+        var bindKey = command.bindKey;
+        if (bindKey["win"] && !bindKey["linux"])
+            bindKey["linux"] = bindKey["win"];
         return {
             name: "Editor: " + _.startCase(aceCommandNamingMap[key] ? aceCommandNamingMap[key] : key),
-            bindKey: command.bindKey,
+            bindKey: bindKey,
             cmd: function () {
                 _.delay(function () {
                     exec(command.name)();
