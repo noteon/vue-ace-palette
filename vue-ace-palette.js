@@ -162,7 +162,7 @@ function getAceCommands() {
         if (aceCommandNamingMap[key] === null)
             return;
         var bindKey = command.bindKey;
-        if (bindKey["win"] && !bindKey["linux"])
+        if (bindKey && bindKey["win"] && !bindKey["linux"])
             bindKey["linux"] = bindKey["win"];
         return {
             name: "Editor: " + _.startCase(aceCommandNamingMap[key] ? aceCommandNamingMap[key] : key),
