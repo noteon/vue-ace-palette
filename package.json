@@ -1,6 +1,6 @@
 {
   "name": "vue-ace-palette",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "author": "qinghai",
   "homepage": "https://github.com/noteon/vue-ace-palette",
   "devDependencies": {},
@@ -9,9 +9,9 @@
     "start": "electron ./demo/main.js"
   },
   "main": "vue-ace-palette.js",
-  "dependencies": {
-    "lodash": "^4.14.0",
-    "vue": "^1.0.26",
-    "vue-typescript": "^0.6.1"
+  "peerDependencies": {
+    "lodash": "^4",
+    "vue": "^1",
+    "vue-typescript": "^0.7"
   }
 }
